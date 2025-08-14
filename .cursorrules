@@ -1,0 +1,261 @@
+# E-commerce SaaS Project Memory Patterns & Rules
+
+# This file establishes patterns Cursor should remember and follow
+
+## PROJECT CONTEXT MEMORY
+
+- This is an e-commerce SaaS platform built with Next.js 15 App Router
+- Target: Modern e-commerce businesses needing subscription-based SaaS solutions
+- Tech Stack: Next.js 15, TypeScript, Tailwind CSS, Shadcn UI, Prisma, PostgreSQL
+- Architecture: Server-first with strategic client components
+
+## CODING PATTERNS TO REMEMBER
+
+### File Structure Patterns
+
+- Use kebab-case for directories: `components/auth-wizard`, `lib/api-helpers`
+- Group related files: `components/` → `ui/`, `forms/`, `layout/`
+- Keep components close to usage: co-locate when possible
+- Use index files for clean imports: `components/ui/index.ts`
+
+### Component Patterns
+
+- Prefer named exports over default exports
+- Use functional components with TypeScript interfaces
+- Structure: exported component → subcomponents → helpers → types
+- Keep components focused and single-responsibility
+
+### State Management Patterns
+
+- Use React Server Components by default
+- Minimize client-side state with `use client` only when necessary
+- Use `nuqs` for URL search parameter state
+- Prefer server state over client state
+- **Avoid client-side data fetching** when server-side works
+- **Keep client components small** and focused
+- **Use streaming** for large data sets
+- **Implement progressive enhancement** - work without JS
+
+### API Patterns
+
+- Use Next.js App Router API routes
+- Implement proper error handling and validation
+- Use TypeScript for all API contracts
+- Follow RESTful conventions
+
+## BUSINESS LOGIC MEMORY
+
+### E-commerce Core Features
+
+- Product catalog with categories and search
+- Shopping cart and checkout flow
+- User authentication and authorization
+- Order management and tracking
+- Payment processing (Stripe integration)
+- Subscription management for SaaS features
+
+### SaaS Features
+
+- Multi-tenant architecture
+- Subscription tiers and billing
+- User dashboard and analytics
+- Admin panel for store management
+- API rate limiting and usage tracking
+
+## UI/UX PATTERNS TO REMEMBER
+
+### Design System
+
+- Use Shadcn UI components as foundation
+- Implement responsive design with mobile-first approach
+- Use Tailwind CSS for styling
+- Maintain consistent spacing and typography
+- Follow accessibility best practices
+
+### User Experience
+
+- Fast loading times and optimized performance
+- Clear navigation and information architecture
+- Intuitive checkout process
+- Responsive design across all devices
+- Error handling with helpful messages
+
+## PERFORMANCE PATTERNS
+
+### Optimization Strategies
+
+- Use Next.js Image component for all images
+- Implement lazy loading for non-critical components
+- Optimize bundle size with dynamic imports
+- Use React Server Components for data fetching
+- Implement proper caching strategies
+- **Minimize client-side JavaScript** - Only send what's absolutely necessary
+- **Server-side rendering** for all static content
+- **Code splitting** by routes and features
+- **Tree shaking** to eliminate unused code
+- **Bundle analysis** to identify large dependencies
+
+### Web Vitals Focus
+
+- Optimize Largest Contentful Paint (LCP)
+- Minimize Cumulative Layout Shift (CLS)
+- Improve First Input Delay (FID)
+- Use proper loading states and skeletons
+
+## SECURITY PATTERNS
+
+### Authentication & Authorization
+
+- Implement secure user authentication
+- Use proper session management
+- Implement role-based access control
+- Secure API endpoints with proper validation
+- Handle sensitive data with encryption
+
+### Data Protection
+
+- Validate all user inputs
+- Implement CSRF protection
+- Use HTTPS for all communications
+- Follow OWASP security guidelines
+- Regular security audits and updates
+
+## TESTING PATTERNS
+
+### Testing Strategy
+
+- Testing will be implemented when specifically requested
+- Focus on feature development and functionality
+- Testing patterns available when needed
+
+## DEPLOYMENT PATTERNS
+
+### Environment Management
+
+- Use environment variables for configuration
+- Separate development, staging, and production
+- Implement proper logging and monitoring
+- Use CI/CD pipelines for deployment
+- Database migrations and backup strategies
+
+## COMMUNICATION PATTERNS
+
+### Code Comments
+
+- Use JSDoc for complex functions
+- Comment business logic decisions
+- Document API endpoints
+- Explain non-obvious implementations
+
+### Git Practices
+
+- Use conventional commit messages
+- Create feature branches for new development
+- Write descriptive PR descriptions
+- Keep commits atomic and focused
+
+## MEMORY RETENTION RULES
+
+### What to Remember
+
+- User preferences and coding style
+- Project architecture decisions
+- Business requirements and constraints
+- Technical debt and future improvements
+- Performance bottlenecks and solutions
+
+### What to Reference
+
+- Previous conversations about specific features
+- Code patterns established in the project
+- User feedback and iteration cycles
+- Technical decisions and their rationale
+
+### What to Avoid Repeating
+
+- Basic setup instructions already provided
+- Coding standards already established
+- Project structure already defined
+- Common patterns already implemented
+
+## CONTEXT SWITCHING RULES
+
+### When Switching Context
+
+- Always reference previous work and decisions
+- Maintain consistency with established patterns
+- Consider impact on existing features
+- Update documentation when making changes
+
+### When Adding New Features
+
+- Follow established patterns and conventions
+- Consider integration with existing systems
+- Maintain performance standards
+- Update relevant documentation
+
+## ERROR HANDLING PATTERNS
+
+### Error Management
+
+- Implement comprehensive error boundaries
+- Use proper error logging and monitoring
+- Provide user-friendly error messages
+- Handle edge cases gracefully
+- Implement retry mechanisms where appropriate
+
+## MONITORING PATTERNS
+
+### Observability
+
+- Implement proper logging throughout the application
+- Use analytics to track user behavior
+- Monitor performance metrics
+- Set up alerts for critical issues
+- Track business metrics and KPIs
+
+## SCALABILITY PATTERNS
+
+### Architecture Considerations
+
+- Design for horizontal scaling
+- Implement proper caching strategies
+- Use CDN for static assets
+- Optimize database queries
+- Consider microservices for future growth
+- **Multi-tenant data isolation** - Ensure complete separation
+- **Database connection pooling** - Efficient resource usage
+- **Read replicas** for scaling database reads
+- **Horizontal scaling** of application servers
+- **Load balancing** across multiple instances
+- **Resource quotas** per tenant to prevent abuse
+
+## COMPLIANCE PATTERNS
+
+### Legal Requirements
+
+- GDPR compliance for user data
+- PCI DSS for payment processing
+- Terms of service and privacy policy
+- Cookie consent and tracking
+- Data retention policies
+
+## DOCUMENTATION PATTERNS
+
+### Code Documentation
+
+- Documentation will be created when specifically requested
+- Focus on feature development and functionality
+- Documentation patterns available when needed
+
+## ITERATION PATTERNS
+
+### Development Cycles
+
+- Regular code reviews and feedback
+- Continuous integration and testing
+- User feedback collection and analysis
+- Performance monitoring and optimization
+- Security audits and updates
+
+## REMEMBER: This project is a modern e-commerce SaaS platform that prioritizes performance, security, and user experience while maintaining clean, maintainable code.
