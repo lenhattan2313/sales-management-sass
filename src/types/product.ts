@@ -29,7 +29,7 @@ export interface ProductVariantFormData {
   sku?: string;
   price?: number;
   stock: number;
-  options: Record<string, any>; // { size: "L", color: "Red" }
+  options: Record<string, string | number | boolean>; // { size: "L", color: "Red" }
 }
 
 // Product display types
@@ -69,7 +69,7 @@ export interface ProductVariantData {
   sku?: string;
   price?: number;
   stock: number;
-  options: Record<string, any>;
+  options: Record<string, string | number | boolean>;
 }
 
 // Category types

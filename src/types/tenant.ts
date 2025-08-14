@@ -5,7 +5,7 @@ export interface TenantConfig {
   domain?: string;
   description?: string;
   logo?: string;
-  settings: Record<string, any>;
+  settings: Record<string, unknown>;
 }
 
 export interface TenantFormData {
@@ -14,7 +14,7 @@ export interface TenantFormData {
   domain?: string;
   description?: string;
   logo?: string;
-  settings: Record<string, any>;
+  settings: Record<string, unknown>;
 }
 
 // Tenant data types
@@ -25,7 +25,7 @@ export interface TenantData {
   domain?: string;
   description?: string;
   logo?: string;
-  settings: Record<string, any>;
+  settings: Record<string, unknown>;
   subscriptionTier: string;
   subscriptionStatus: string;
   currentPeriodStart?: Date;
@@ -159,7 +159,7 @@ export interface TenantSettingsResponse {
 export interface TenantOnboardingData {
   step: number;
   completed: boolean;
-  data: Record<string, any>;
+  data: Record<string, unknown>;
 }
 
 export interface TenantOnboardingResponse {

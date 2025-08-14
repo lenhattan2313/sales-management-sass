@@ -85,7 +85,7 @@ export interface OrderItemData {
   variant?: {
     id: string;
     name: string;
-    options: Record<string, any>;
+    options: Record<string, string | number | boolean>;
   };
 }
 
@@ -169,7 +169,7 @@ export interface CartItem {
   };
   variant?: {
     name: string;
-    options: Record<string, any>;
+    options: Record<string, string | number | boolean>;
   };
 }
 

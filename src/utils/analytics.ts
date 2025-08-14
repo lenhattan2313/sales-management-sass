@@ -3,7 +3,7 @@
  */
 export function trackPageView(
   page: string,
-  properties?: Record<string, any>
+  properties?: Record<string, unknown>
 ): void {
   if (typeof window !== "undefined" && window.gtag) {
     window.gtag("config", process.env.NEXT_PUBLIC_GA_ID!, {
@@ -19,7 +19,7 @@ export function trackPageView(
  */
 export function trackEvent(
   eventName: string,
-  parameters?: Record<string, any>
+  parameters?: Record<string, unknown>
 ): void {
   if (typeof window !== "undefined" && window.gtag) {
     window.gtag("event", eventName, parameters);
@@ -36,7 +36,7 @@ export function trackEcommerceEvent(
     | "remove_from_cart"
     | "begin_checkout"
     | "purchase",
-  data: Record<string, any>
+  data: Record<string, unknown>
 ): void {
   trackEvent(eventType, data);
 }
