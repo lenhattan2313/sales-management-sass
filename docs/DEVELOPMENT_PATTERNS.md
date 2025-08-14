@@ -58,6 +58,95 @@ src/
 - Components grouped by feature domain
 - Reusable UI components in shared ui/ folder
 - Feature-specific components in their own folders
+- **NEVER put multiple components in a single file** - each component should have its own file
+- **Separate components by feature and responsibility**
+- **Use index files for clean imports** when multiple related components exist
+
+**Component Separation Rules:**
+
+- ✅ **One component per file** - Each component gets its own `.tsx` file
+- ✅ **Feature-based organization** - Group related components in feature folders
+- ✅ **Clear naming** - Component file name should match the component name
+- ✅ **Index exports** - Use `index.ts` files to export multiple components from a folder
+- ❌ **Multiple components in one file** - Never put `ProductList`, `ProductCard`, and `ProductSkeleton` in the same file
+- ❌ **Mixed responsibilities** - Don't mix different feature components in the same file
+- ❌ **Unclear naming** - Avoid generic names like `components.tsx` or `index.tsx` for component files
+
+**Example of Proper Component Separation:**
+
+```
+src/components/features/products/
+├── index.ts                 # Export all product components
+├── product-list.tsx         # Main ProductList component only
+├── product-card.tsx         # ProductCard component only
+├── product-skeleton.tsx     # ProductSkeleton component only
+├── product-filters.tsx      # ProductFilters component only
+└── product-search.tsx       # ProductSearch component only
+```
+
+**Example of Improper Component Organization (AVOID):**
+
+```typescript
+// ❌ DON'T DO THIS - Multiple components in one file
+// src/components/features/products/product-list.tsx
+export function ProductList() { /* ... */ }
+export function ProductCard() { /* ... */ }
+export function ProductSkeleton() { /* ... */ }
+```
+
+**Example of Proper Component Organization (DO THIS):**
+
+```typescript
+// ✅ DO THIS - One component per file
+// src/components/features/products/product-list.tsx
+import { ProductCard } from "./product-card";
+import { ProductSkeleton } from "./product-skeleton";
+
+export function ProductList() {
+  // Only ProductList logic here
+  return (
+    <div>
+      {products.map(product => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
+}
+
+// src/components/features/products/product-card.tsx
+export function ProductCard({ product }: ProductCardProps) {
+  // Only ProductCard logic here
+  return <div>{/* ProductCard JSX */}</div>;
+}
+
+// src/components/features/products/product-skeleton.tsx
+export function ProductSkeleton() {
+  // Only ProductSkeleton logic here
+  return <div>{/* Skeleton JSX */}</div>;
+}
+
+// src/components/features/products/index.ts
+export { ProductList } from "./product-list";
+export { ProductCard } from "./product-card";
+export { ProductSkeleton } from "./product-skeleton";
+```
+
+**UI Component Development Workflow:**
+
+1. **ALWAYS check Shadcn UI first** - Visit [ui.shadcn.com](https://ui.shadcn.com/) before creating any new UI component
+2. **Install from Shadcn** - Use `npx shadcn@latest add [component-name]` to install existing components
+3. **Customize Shadcn components** - Extend and customize Shadcn components rather than building from scratch
+4. **Only create custom components** when Shadcn doesn't provide what you need
+5. **Follow Shadcn patterns** - Use the same styling and structure patterns as Shadcn components
+6. **Maintain consistency** - Ensure all UI components follow the same design system
+
+**Shadcn UI Priority:**
+
+- ✅ **Use Shadcn components** for all common UI elements (buttons, inputs, cards, etc.)
+- ✅ **Extend Shadcn components** for feature-specific needs
+- ✅ **Follow Shadcn conventions** for styling and structure
+- ❌ **Avoid building from scratch** when Shadcn provides the component
+- ❌ **Don't mix different UI libraries** - stick to Shadcn + Radix + Tailwind
 
 **Business Logic Organization:**
 
@@ -229,6 +318,165 @@ export function ProductForm() {
     resolver: zodResolver(formSchema),
   });
   // Form logic
+}
+```
+
+## React Query Patterns Memory
+
+### Query Organization
+
+**API Layer Structure:**
+
+```
+src/
+├── lib/api/
+│   ├── auth/
+│   │   ├── auth-queries.ts
+│   │   ├── auth-mutations.ts
+│   │   └── auth-types.ts
+│   ├── products/
+│   │   ├── product-queries.ts
+│   │   ├── product-mutations.ts
+│   │   └── product-types.ts
+│   ├── orders/
+│   │   ├── order-queries.ts
+│   │   ├── order-mutations.ts
+│   │   └── order-types.ts
+│   └── query-client.ts
+```
+
+### Query Patterns
+
+**Query Keys Structure:**
+
+```typescript
+// Consistent query key patterns
+export const queryKeys = {
+  auth: {
+    user: ["auth", "user"] as const,
+    session: ["auth", "session"] as const,
+  },
+  products: {
+    all: ["products"] as const,
+    lists: () => [...queryKeys.products.all, "list"] as const,
+    list: (filters: ProductFilters) =>
+      [...queryKeys.products.lists(), filters] as const,
+    details: () => [...queryKeys.products.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.products.details(), id] as const,
+  },
+  orders: {
+    all: ["orders"] as const,
+    lists: () => [...queryKeys.orders.all, "list"] as const,
+    list: (filters: OrderFilters) =>
+      [...queryKeys.orders.lists(), filters] as const,
+    details: () => [...queryKeys.orders.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.orders.details(), id] as const,
+  },
+};
+```
+
+**Query Functions:**
+
+```typescript
+// Example query function pattern
+export const useProducts = (filters: ProductFilters) => {
+  return useQuery({
+    queryKey: queryKeys.products.list(filters),
+    queryFn: () => fetchProducts(filters),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+};
+```
+
+**Mutation Patterns:**
+
+```typescript
+// Example mutation pattern
+export const useCreateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createProduct,
+    onSuccess: newProduct => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.products.lists(),
+      });
+
+      // Optimistic update
+      queryClient.setQueryData(
+        queryKeys.products.detail(newProduct.id),
+        newProduct
+      );
+    },
+    onError: error => {
+      // Handle error
+      console.error("Failed to create product:", error);
+    },
+  });
+};
+```
+
+### React Query Best Practices
+
+**Performance Optimization:**
+
+- Use `staleTime` to control refetch frequency
+- Implement `gcTime` for cache garbage collection
+- Use `enabled` option for conditional queries
+- Leverage `select` for data transformation
+
+**Error Handling:**
+
+- Implement global error boundaries
+- Use `onError` callbacks in mutations
+- Provide user-friendly error messages
+- Implement retry logic where appropriate
+
+**Optimistic Updates:**
+
+- Update cache immediately for better UX
+- Revert on error with `onError` callback
+- Use `setQueryData` for instant updates
+- Implement rollback mechanisms
+
+**Background Refetching:**
+
+- Enable background refetching for real-time data
+- Use `refetchOnWindowFocus` for critical data
+- Implement `refetchOnMount` for fresh data
+- Configure `refetchOnReconnect` for network recovery
+
+### Integration with Server Components
+
+**Hybrid Approach:**
+
+- Use Server Components for initial data loading
+- Hydrate with React Query for client-side updates
+- Implement progressive enhancement
+- Maintain SEO benefits with SSR
+
+**Data Flow Pattern:**
+
+```typescript
+// Server Component loads initial data
+async function ProductList() {
+  const initialProducts = await fetchProducts()
+
+  return (
+    <ProductListClient initialData={initialProducts} />
+  )
+}
+
+// Client Component handles updates
+function ProductListClient({ initialData }: { initialData: Product[] }) {
+  const { data: products } = useProducts(
+    {},
+    { initialData }
+  )
+
+  return <ProductGrid products={products} />
 }
 ```
 
@@ -609,6 +857,8 @@ refactor/auth-system
 - **Separate types, UI, logic, and hooks by feature**
 - **Keep related code together in feature folders**
 - **Avoid mixing different features in single files**
+- **NEVER put multiple components in a single file** - each component should have its own file
+- **Separate components by feature and responsibility**
 - Focus on feature development and functionality
 - Use Tailwind CSS for styling
 - Implement proper authentication and authorization

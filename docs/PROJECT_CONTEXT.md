@@ -54,6 +54,7 @@ This is a **modern e-commerce SaaS platform** that allows businesses to:
 - **Tailwind CSS** for styling
 - **Shadcn UI** for components
 - **Prisma** for database operations
+- **React Query** for API state management and caching
 
 ### Development Workflow
 
@@ -68,21 +69,18 @@ This is a **modern e-commerce SaaS platform** that allows businesses to:
 ### Why These Choices?
 
 1. **Next.js 15 App Router**
-
    - Server-first rendering
    - Built-in performance optimizations
    - Excellent developer experience
    - Strong TypeScript support
 
 2. **Multi-tenant Architecture**
-
    - Scalable business model
    - Data isolation for security
    - Resource sharing for efficiency
    - Subscription-based access control
 
 3. **PostgreSQL + Prisma**
-
    - Reliable and performant
    - Excellent TypeScript integration
    - Rich ecosystem and tooling
@@ -99,34 +97,29 @@ This is a **modern e-commerce SaaS platform** that allows businesses to:
 ### Core Features Priority
 
 1. **User Authentication & Authorization**
-
    - Secure login/signup
    - Role-based access control
    - Multi-tenant isolation
 
 2. **Product Management**
-
    - CRUD operations
    - Category management
    - Inventory tracking
    - Image optimization
 
 3. **Shopping Experience**
-
    - Product catalog
    - Search and filtering
    - Shopping cart
    - Checkout process
 
 4. **Order Management**
-
    - Order processing
    - Status tracking
    - Customer notifications
    - Admin dashboard
 
 5. **Payment Processing**
-
    - Stripe integration
    - Multiple payment methods
    - Subscription billing
@@ -151,14 +144,12 @@ This is a **modern e-commerce SaaS platform** that allows businesses to:
 ### Key User Flows
 
 1. **Store Setup**
-
    - Quick onboarding
    - Template selection
    - Basic configuration
    - Payment setup
 
 2. **Customer Shopping**
-
    - Browse products
    - Add to cart
    - Secure checkout

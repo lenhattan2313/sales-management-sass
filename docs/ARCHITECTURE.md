@@ -18,12 +18,12 @@ This is a modern e-commerce SaaS platform designed for businesses that need subs
 
 ### Key Libraries
 
-- **State Management**: React Server Components + nuqs for URL state
+- **State Management**: React Server Components + nuqs for URL state + React Query for API state
 - **Forms**: React Hook Form + Zod validation
 - **UI Components**: Shadcn UI + Radix UI primitives
 - **Icons**: Lucide React
 - **Date Handling**: date-fns
-- **HTTP Client**: Built-in Next.js fetch with custom wrappers
+- **HTTP Client**: Built-in Next.js fetch with React Query for caching and state management
 
 ## Architecture Patterns
 
@@ -34,7 +34,15 @@ This is a modern e-commerce SaaS platform designed for businesses that need subs
 - Implement data fetching at the server level
 - Leverage Next.js caching and revalidation
 
-### 2. Component Architecture
+### 2. React Query Integration
+
+- Use React Query for client-side API state management
+- Implement optimistic updates for better UX
+- Leverage React Query's caching and background refetching
+- Use React Query DevTools for debugging
+- Combine with Server Components for optimal performance
+
+### 3. Component Architecture
 
 ```
 components/
@@ -45,7 +53,7 @@ components/
 └── providers/    # Context providers
 ```
 
-### 3. API Architecture
+### 4. API Architecture
 
 ```
 app/
@@ -100,6 +108,7 @@ subscriptions (id, user_id, plan_id, status, current_period_end)
 - Redis for session and cart data
 - Database query optimization with Prisma
 - CDN for static assets
+- React Query caching for API data
 
 ### Optimization Techniques
 

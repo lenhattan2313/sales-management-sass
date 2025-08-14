@@ -81,6 +81,45 @@ export async function getData(tenantId: string) {
 }
 ```
 
+### React Query Patterns
+
+```typescript
+// Query Hook Template
+export function useData(tenantId: string) {
+  return useQuery({
+    queryKey: ["data", tenantId],
+    queryFn: () => fetchData(tenantId),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+}
+
+// Mutation Hook Template
+export function useCreateData() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createData,
+    onSuccess: newData => {
+      queryClient.invalidateQueries({ queryKey: ["data"] });
+      queryClient.setQueryData(["data", newData.id], newData);
+    },
+  });
+}
+
+// Query Keys Structure
+export const queryKeys = {
+  data: {
+    all: ["data"] as const,
+    lists: () => [...queryKeys.data.all, "list"] as const,
+    list: (filters: DataFilters) =>
+      [...queryKeys.data.lists(), filters] as const,
+    details: () => [...queryKeys.data.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.data.details(), id] as const,
+  },
+};
+```
+
 ## 🎨 Styling Patterns
 
 ### Tailwind CSS Classes
@@ -378,6 +417,9 @@ app/
 1. Create feature branch
 2. **Create feature-specific types** in `src/types/feature.ts`
 3. **Create feature components** in `src/components/feature/`
+   - **ALWAYS check Shadcn UI first** before creating any UI component
+   - Use `npx shadcn@latest add [component-name]` to install existing components
+   - Only create custom components when Shadcn doesn't provide what you need
 4. **Create feature logic** in `src/lib/feature/`
 5. **Create feature hooks** in `src/hooks/feature/`
 6. **Create feature API routes** in `src/app/api/feature/`
@@ -402,6 +444,21 @@ app/
 3. Add error handling
 4. Write integration tests
 5. Update API documentation
+
+### UI Component Development
+
+1. **Check Shadcn UI first** - Visit [ui.shadcn.com](https://ui.shadcn.com/) before creating any component
+2. **Install from Shadcn** - Use `npx shadcn@latest add [component-name]`
+3. **Customize existing components** - Extend Shadcn components rather than building from scratch
+4. **Create custom only when needed** - Only build custom components when Shadcn doesn't provide the functionality
+5. **Follow Shadcn patterns** - Use consistent styling and structure
+6. **Test component functionality** - Ensure components work as expected
+
+**Shadcn UI Priority:**
+- ✅ Use Shadcn for buttons, inputs, cards, modals, etc.
+- ✅ Extend Shadcn components for feature-specific needs
+- ❌ Avoid building from scratch when Shadcn provides the component
+- ❌ Don't mix different UI libraries
 
 ## 📚 Quick Links
 

@@ -21,7 +21,7 @@ A modern, multi-tenant e-commerce platform built with Next.js 15, TypeScript, an
 - **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: NextAuth.js
 - **Payments**: Stripe
-- **State Management**: React Server Components + nuqs
+- **State Management**: React Server Components + nuqs + React Query
 - **Validation**: Zod
 - **Icons**: Lucide React
 
