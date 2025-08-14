@@ -10,36 +10,72 @@
 - Avoid `any` - use proper typing or `unknown`
 - Use path aliases for clean imports
 
-### Component Patterns
+### Feature-Based Organization
 
-```typescript
-// Preferred component structure
-interface ComponentProps {
-  // Props interface
-}
+**File Structure by Feature:**
 
-export function Component({ prop1, prop2 }: ComponentProps) {
-  // Component logic
-  return (
-    // JSX
-  );
-}
-
-// Subcomponents
-function SubComponent() {
-  // Subcomponent logic
-}
-
-// Helper functions
-function helperFunction() {
-  // Helper logic
-}
-
-// Types
-interface LocalType {
-  // Local type definition
-}
 ```
+src/
+├── types/                    # Feature-specific types
+│   ├── auth.ts              # Authentication types
+│   ├── product.ts           # Product management types
+│   ├── order.ts             # Order management types
+│   ├── tenant.ts            # Multi-tenant types
+│   └── index.ts             # Main types export
+├── components/              # UI components by feature
+│   ├── ui/                  # Reusable UI components (Shadcn)
+│   ├── auth/                # Authentication components
+│   ├── product/             # Product management components
+│   ├── order/               # Order management components
+│   └── tenant/              # Multi-tenant components
+├── lib/                     # Business logic by feature
+│   ├── auth/                # Authentication logic
+│   ├── product/             # Product management logic
+│   ├── order/               # Order management logic
+│   └── tenant/              # Multi-tenant logic
+├── hooks/                   # Custom hooks by feature
+│   ├── auth/                # Authentication hooks
+│   ├── product/             # Product management hooks
+│   ├── order/               # Order management hooks
+│   └── tenant/              # Multi-tenant hooks
+└── app/api/                 # API routes by feature
+    ├── auth/                # Authentication API
+    ├── products/            # Product management API
+    ├── orders/              # Order management API
+    └── tenants/             # Multi-tenant API
+```
+
+### Separation of Concerns
+
+**Types Organization:**
+
+- Each feature has its own types file
+- No mixing of types from different features
+- Common types in shared files only when necessary
+
+**UI Components Organization:**
+
+- Components grouped by feature domain
+- Reusable UI components in shared ui/ folder
+- Feature-specific components in their own folders
+
+**Business Logic Organization:**
+
+- Server-side logic separated by feature
+- Database operations grouped by domain
+- Validation logic with feature-specific schemas
+
+**Custom Hooks Organization:**
+
+- Client-side logic organized by feature
+- State management hooks per feature
+- API integration hooks per feature
+
+**API Routes Organization:**
+
+- RESTful endpoints grouped by feature
+- Each feature has its own API folder
+- Consistent naming and structure across features
 
 ### File Naming Conventions
 
@@ -47,6 +83,97 @@ interface LocalType {
 - Utilities: camelCase (`formatPrice.ts`)
 - Constants: UPPER_SNAKE_CASE (`API_ENDPOINTS.ts`)
 - Directories: kebab-case (`product-management/`)
+
+### Feature-Specific File Organization
+
+**Authentication Feature:**
+
+```
+src/
+├── types/auth.ts
+├── components/auth/
+│   ├── LoginForm.tsx
+│   ├── RegisterForm.tsx
+│   └── AuthProvider.tsx
+├── lib/auth/
+│   ├── auth-service.ts
+│   ├── auth-validation.ts
+│   └── auth-utils.ts
+├── hooks/auth/
+│   ├── useAuth.ts
+│   ├── useLogin.ts
+│   └── useRegister.ts
+└── app/api/auth/
+    ├── login/route.ts
+    ├── register/route.ts
+    └── logout/route.ts
+```
+
+**Product Management Feature:**
+
+```
+src/
+├── types/product.ts
+├── components/product/
+│   ├── ProductCard.tsx
+│   ├── ProductForm.tsx
+│   └── ProductList.tsx
+├── lib/product/
+│   ├── product-service.ts
+│   ├── product-validation.ts
+│   └── product-utils.ts
+├── hooks/product/
+│   ├── useProducts.ts
+│   ├── useProduct.ts
+│   └── useProductForm.ts
+└── app/api/products/
+    ├── route.ts
+    └── [id]/route.ts
+```
+
+**Order Management Feature:**
+
+```
+src/
+├── types/order.ts
+├── components/product/
+│   ├── OrderCard.tsx
+│   ├── OrderForm.tsx
+│   └── OrderList.tsx
+├── lib/order/
+│   ├── order-service.ts
+│   ├── order-validation.ts
+│   └── order-utils.ts
+├── hooks/order/
+│   ├── useOrders.ts
+│   ├── useOrder.ts
+│   └── useCart.ts
+└── app/api/orders/
+    ├── route.ts
+    └── [id]/route.ts
+```
+
+**Multi-Tenant Feature:**
+
+```
+src/
+├── types/tenant.ts
+├── components/tenant/
+│   ├── TenantCard.tsx
+│   ├── TenantForm.tsx
+│   └── TenantList.tsx
+├── lib/tenant/
+│   ├── tenant-service.ts
+│   ├── tenant-validation.ts
+│   └── tenant-utils.ts
+├── hooks/tenant/
+│   ├── useTenants.ts
+│   ├── useTenant.ts
+│   └── useTenantSettings.ts
+└── app/api/tenants/
+    ├── route.ts
+    └── [id]/route.ts
+```
 
 ## State Management Patterns
 
@@ -478,6 +605,10 @@ refactor/auth-system
 - Prefer server components over client components
 - Implement proper error handling
 - Follow consistent naming conventions
+- **Organize by feature, not by type**
+- **Separate types, UI, logic, and hooks by feature**
+- **Keep related code together in feature folders**
+- **Avoid mixing different features in single files**
 - Focus on feature development and functionality
 - Use Tailwind CSS for styling
 - Implement proper authentication and authorization

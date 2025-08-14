@@ -293,22 +293,44 @@ export type Product = z.infer<typeof productSchema>;
 
 ## 📁 File Structure
 
-### Components
+### Feature-Based Organization
 
 ```
-components/
-├── ui/              # Shadcn UI components
-├── forms/           # Form components
-├── layout/          # Layout components
-├── features/        # Feature-specific components
-└── providers/       # Context providers
+src/
+├── types/                    # Feature-specific types
+│   ├── auth.ts              # Authentication types
+│   ├── product.ts           # Product management types
+│   ├── order.ts             # Order management types
+│   ├── tenant.ts            # Multi-tenant types
+│   └── index.ts             # Main types export
+├── components/              # UI components by feature
+│   ├── ui/                  # Reusable UI components (Shadcn)
+│   ├── auth/                # Authentication components
+│   ├── product/             # Product management components
+│   ├── order/               # Order management components
+│   └── tenant/              # Multi-tenant components
+├── lib/                     # Business logic by feature
+│   ├── auth/                # Authentication logic
+│   ├── product/             # Product management logic
+│   ├── order/               # Order management logic
+│   └── tenant/              # Multi-tenant logic
+├── hooks/                   # Custom hooks by feature
+│   ├── auth/                # Authentication hooks
+│   ├── product/             # Product management hooks
+│   ├── order/               # Order management hooks
+│   └── tenant/              # Multi-tenant hooks
+└── app/api/                 # API routes by feature
+    ├── auth/                # Authentication API
+    ├── products/            # Product management API
+    ├── orders/              # Order management API
+    └── tenants/             # Multi-tenant API
 ```
 
 ### App Router
 
 ```
 app/
-├── api/             # API routes
+├── api/             # API routes by feature
 ├── (auth)/          # Authentication pages
 ├── (dashboard)/     # Dashboard pages
 ├── (store)/         # Store frontend
@@ -329,6 +351,8 @@ app/
 - **Bundle size**: Minimize client-side JavaScript
 - **Caching**: Implement at multiple levels
 - **Database**: Use connection pooling and read replicas
+- **Feature organization**: Separate types, UI, logic, and hooks by feature
+- **Code organization**: Keep related code together in feature folders
 
 ### Avoid These
 
@@ -342,18 +366,26 @@ app/
 - Unnecessary client-side data fetching
 - Missing pagination for large datasets
 - Ignoring multi-tenant isolation
+- **Mixing different features in single files**
+- **Gathering all types in one file**
+- **Putting all components in one folder**
+- **Mixing business logic with UI components**
 
 ## 🔄 Common Workflows
 
 ### Adding New Feature
 
 1. Create feature branch
-2. Add TypeScript types
-3. Implement server component first
-4. Add client interactivity if needed
-5. Focus on functionality and performance
-6. Update documentation when requested
-7. Submit PR
+2. **Create feature-specific types** in `src/types/feature.ts`
+3. **Create feature components** in `src/components/feature/`
+4. **Create feature logic** in `src/lib/feature/`
+5. **Create feature hooks** in `src/hooks/feature/`
+6. **Create feature API routes** in `src/app/api/feature/`
+7. Implement server component first
+8. Add client interactivity if needed
+9. Focus on functionality and performance
+10. Update documentation when requested
+11. Submit PR
 
 ### Database Changes
 
